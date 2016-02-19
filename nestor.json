@@ -1,0 +1,8 @@
+{
+  "name": "Papertrail",
+  "permalink": "papertrail",
+  "description": "Manage Papertrail from Nestor",
+  "environment_keys": {
+    "NESTOR_PAPERTRAIL_API_TOKEN" : true
+  }
+}

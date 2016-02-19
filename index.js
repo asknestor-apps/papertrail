@@ -1,5 +1,5 @@
-var Path = require('path');
+var path = require('path');
 
 module.exports = function(robot) {
-  robot.loadFile(Path.resolve(__dirname, "src"), "papertrail.js");
+  robot.loadFile(path.resolve(__dirname, "scripts"), "papertrail.js");
 };
