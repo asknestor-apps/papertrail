@@ -32,7 +32,7 @@ module.exports = function(robot) {
           var events = [];
           var response = JSON.parse(body);
 
-          for(var i = 0; i < response.events.length; i++) {
+          for(var i = 0; i < Math.min(5, response.events.length); i++) {
             event = response.events[i];
             events.push(event.display_received_at + " " + event.source_name + " " + event.program + ": " + event.message);
           }
@@ -41,8 +41,9 @@ module.exports = function(robot) {
             msg.send("\"" + (queryOptions.q || "") + "\": No matches were found in time. Search harder at: " + htmlUrl, done);
           } else {
             matchText = events.length === 1 ? "match" : "matches";
-            msg.send("\"" + (queryOptions.q || "") + "\" found " + events.length + " " + matchText + " – " + htmlUrl).then(function() {
-              msg.send(events.join("\n") + "\n", done);
+
+            msg.send("Found " + events.length + " " + matchText + " for query:" + "\"" + queryOptions.q + "\"" + " – " + htmlUrl).then(function() {
+              msg.send(events, done);
             });
           }
         }
