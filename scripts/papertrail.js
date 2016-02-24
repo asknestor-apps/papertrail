@@ -32,9 +32,9 @@ module.exports = function(robot) {
           var events = [];
           var response = JSON.parse(body);
 
-          for(var i = 0; i < Math.min(15, response.events.length); i++) {
+          for(var i = 0; i < response.events.length; i++) {
             event = response.events[i];
-            events.push(event.display_received_at + " " + event.source_name + " " + event.program + ": " + event.message);
+            events.push("*" + event.display_received_at + " " + event.source_name + " " + event.program + "*: " + event.message);
           }
 
           if (events.length === 0) {
