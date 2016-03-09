@@ -3,6 +3,9 @@
   "permalink": "papertrail",
   "description": "Manage Papertrail from Nestor",
   "environment_keys": {
-    "NESTOR_PAPERTRAIL_API_TOKEN" : true
+    "NESTOR_PAPERTRAIL_API_TOKEN" : {
+      "required": true,
+      "mode": "user"
+    }
   }
 }
