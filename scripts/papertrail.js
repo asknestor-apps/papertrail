@@ -8,7 +8,7 @@ module.exports = function(robot) {
            header("X-Papertrail-Token", process.env.NESTOR_PAPERTRAIL_API_TOKEN);
   };
 
-  robot.respond(/(?:log|papertrail) me(?: group=(?:"([^"]+)"|(\S+)))?(?: (?:server|host|system|source)=(\S+))?(?: (.*))?$/, function(msg, done) {
+  robot.respond(/papertrail me(?: group=(?:"([^"]+)"|(\S+)))?(?: (?:server|host|system|source)=(\S+))?(?: (.*))?$/, { suggestions: ["papertrail me [group=<group>] [server|host|system|source=<source>] [query]"] }, function(msg, done) {
     var fetchResults = function(queryOptions, done) {
       var htmlUrl;
 
@@ -83,7 +83,7 @@ module.exports = function(robot) {
     }
   });
 
-  robot.respond(/papertrail groups/, function(msg, done) {
+  robot.respond(/papertrail groups/, { suggestions: ["papertrail groups"] }, function(msg, done) {
     msg.reply("Fetching papertrail groups...").then(function() {
       Group.fetch(http, function(groups) {
         if (groups.length == 0) {
@@ -99,7 +99,7 @@ module.exports = function(robot) {
     });
   });
 
-  robot.respond(/papertrail group (.*)/, function(msg, done) {
+  robot.respond(/papertrail group (.*)/, { suggestions: ["papertrail group <group-name>"] }, function(msg, done) {
     var groupName = msg.match[1];
     Group.find(http, groupName, function(group) {
       if (group != null) {
@@ -110,7 +110,7 @@ module.exports = function(robot) {
     });
   });
 
-  robot.respond(/papertrail (?:servers|sources|hosts|systems)$/, function(msg, done) {
+  robot.respond(/papertrail (?:servers|sources|hosts|systems)$/, { suggestions: ["papertrail <servers|sources|hosts|systems>"] }, function(msg, done) {
     msg.reply("Fetching papertrail servers...").then(function() {
       Server.fetch(http, function(servers) {
         if (servers.length == 0) {
@@ -126,7 +126,7 @@ module.exports = function(robot) {
     });
   });
 
-  robot.respond(/papertrail (?:server|source|host|system) (.*)/, function(msg, done) {
+  robot.respond(/papertrail (?:server|source|host|system) (.*)/,  { suggestions: ["papertrail <server|source|host|system> <source-name>"] }, function(msg, done) {
     var serverName;
     serverName = msg.match[1];
 
