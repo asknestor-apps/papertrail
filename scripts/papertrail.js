@@ -76,14 +76,24 @@ module.exports = function(robot) {
         }
       });
     } else if (serverName != null) {
-      Server.find(serverName, function(server) {
+      Server.find(http, serverName, function(server) {
         if (server != null) {
           return fetchResults({
             q: query,
             system_id: server.id()
           }, done);
         } else {
-          msg.send("Could not find server \"" + serverName + "\". Use \"/papertrail servers\" for possible options", done);
+          Server.fetch(http, function(servers) {
+            if (servers.length == 0) {
+              msg.send("Looks like you don't have any Papertrail servers/hosts/systems :(", done);
+            } else {
+              results = [];
+              for(var i = 0; i < servers.length; i++) {
+                results.push("* " + servers[i].name());
+              }
+              msg.send("Oops, couldn't find this server/host/system. Here are the servers/hosts/systems available to you:\n" + results, done);
+            }
+          });
         }
       });
     } else {

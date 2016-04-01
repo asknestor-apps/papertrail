@@ -15,9 +15,9 @@ Server.find = function(http, value, callback) {
   var _this = this;
 
   this.fetch(http, function(servers) {
-    server = this.__findById(value);
-    if (server == null) { server = this.__findByExactName(value); }
-    if (server == null) { server = this.__findByFuzzyName(value); }
+    server = _this.__findById(servers, value);
+    if (server == null) { server = _this.__findByExactName(servers, value); }
+    if (server == null) { server = _this.__findByFuzzyName(servers, value); }
 
     callback(server);
   });
@@ -42,7 +42,7 @@ Server.fetch = function(http, callback) {
 };
 
 Server.__findById = function(servers, id) {
-  for (var i = 0; i < server.length; i++) {
+  for (var i = 0; i < servers.length; i++) {
     server = servers[i];
     if (server.id() === id) {
       return server;
