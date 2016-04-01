@@ -55,14 +55,24 @@ module.exports = function(robot) {
     var query = msg.match[4] || "";
 
     if (groupName != null) {
-      Group.find(groupName, function(group) {
+      Group.find(http, groupName, function(group) {
         if (group != null) {
           fetchResults({
             q: query,
             group_id: group.id()
           }, done);
         } else {
-          msg.send("Could not find group \"" + groupName + "\". Use \"/papertrail groups\" for possible options", done);
+          Group.fetch(http, function(groups) {
+            if (groups.length == 0) {
+              msg.send("Looks like you don't have any Papertrail groups :(", done);
+            } else {
+              results = [];
+              for(var i = 0; i < groups.length; i++) {
+                results.push("* " + groups[i].description());
+              }
+              msg.send("Oops, couldn't find this group. Here are the groups available to you:\n" + results, done);
+            }
+          });
         }
       });
     } else if (serverName != null) {

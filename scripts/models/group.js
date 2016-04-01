@@ -27,9 +27,9 @@ Group.find = function(http, value, callback) {
   var _this = this;
 
   this.fetch(http, function(groups) {
-    group = this.__findById(value);
-    if (group == null) { group = this.__findByExactName(value); }
-    if (group == null) { group = this.__findByFuzzyName(value); }
+    group = _this.__findById(groups, value);
+    if (group == null) { group = _this.__findByExactName(groups, value); }
+    if (group == null) { group = _this.__findByFuzzyName(groups, value); }
 
     callback(group);
   });
@@ -68,7 +68,7 @@ Group.__findByExactName = function(groups, name) {
   var name = name.toLowerCase();
   for (var i = 0; i < groups.length; i++) {
     var group = groups[i];
-    if (group.name().toLowerCase() === name) {
+    if (group && group.name().toLowerCase() === name) {
       return group;
     }
   }
@@ -80,7 +80,7 @@ Group.__findByFuzzyName = function(groups, name) {
   var name = name.toLowerCase();
   for (var i = 0; i < groups.length; i++) {
     var group = groups[i];
-    if (group.name().toLowerCase().indexOf(name) !== -1) {
+    if (group && group.name().toLowerCase().indexOf(name) !== -1) {
       return group;
     }
   }
